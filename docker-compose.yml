@@ -1,0 +1,26 @@
+version: '3'
+
+volumes:
+  vault-file:
+    external: True
+  vault-logs:
+    external: True
+
+services:
+
+  vault:
+    container_name: localvault
+    image: vault:latest
+    volumes:
+      - vault-file:/vault/file
+      - vault-logs:/vault/logs
+    ports:
+      - "127.0.0.1:8200:8200"
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200
+      - VAULT_API_ADDR=http://0.0.0.0:8200
+      - VAULT_ADDRESS=http://0.0.0.0:8200
+      - VAULT_LOCAL_CONFIG={"ui":"true","listener":{"tcp":{"address":"0.0.0.0:8200","tls_disable":"true"}},"backend":{"file":{"path":"/vault/file"}},"default_lease_ttl":"168h","max_lease_ttl":"0h","api_addr":"http://0.0.0.0:8200"}
+    cap_add:
+      - IPC_LOCK
+    command: vault server -config /vault/config
