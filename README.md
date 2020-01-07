@@ -9,9 +9,10 @@ A set of [vault](https://www.vaultproject.io/) configuration scripts for managin
 ## Installation
 Enter the following commands in a CMD shell:
 ```
-cd %HOME%
+cd %USERPROFILE%
 git clone https://github.com/rstms/localvault.git
 ```
+Or use the [ZIP link](https://github.com/rstms/localvault/archive/master.zip) and extract these files into `%USERPROFILE%\localvault`
 
 Add %HOME%/localvault to your path using control panel's system applet:
 ```
@@ -29,6 +30,8 @@ unseal
 login
 localvault status
 ```
+
+Open the Vault UI in your browser with `http://127.0.0.1:8200`
 
 
 ## `localvault` Usage

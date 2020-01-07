@@ -1,6 +1,6 @@
 @echo off
 rem @ECHO OFF
-set VAULT_DIR=%HOME%\localvault
+set VAULT_DIR=%USERPROFILE%\localvault
 set CONTAINER=localvault
 REM set VOLUME=-v vault-config:/vault/config -v vault-file:/vault/file -v vault-logs:/vault/logs
 set VOLUME=-v vault-file:/vault/file -v vault-logs:/vault/logs
