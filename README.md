@@ -37,12 +37,15 @@ Usage:  localvault COMMAND
 
  Where COMMAND is: 
    create                 create new vault
-   start                  start vault instance
    init                   initialize vault, generating keys and root token
-   unseal KEY             unseal vault with key (3 keys required to unseal)
-   vault                  run vault CLI command
-   shell                  run a sh session in vault container
-   status                 output vault status
-   seal                   seal vault
-   stop                   stop vault instance
    destroy                delete all localvault data
+   start                  start vault container
+   stop                   stop and seal vault container
+   status                 output vault status
+   unseal KEY             unseal vault with key (3 keys required to unseal)
+   vault ARG [...]        run vault CLI command
+   exec 'CMDLINE'         execute shell command in the vault container
+   shell                  interactive shell session in vault container
+   seal                   seal vault
+
+```

@@ -19,15 +19,16 @@ echo Usage:  %~n0 COMMAND
 echo.
 echo  Where COMMAND is: 
 echo    create                 create new vault
-echo    start                  start vault instance
 echo    init                   initialize vault, generating keys and root token
-echo    unseal KEY             unseal vault with key (3 keys required to unseal)
-echo    vault                  run vault CLI command
-echo    shell                  run a sh session in vault container
-echo    status                 output vault status
-echo    seal                   seal vault
-echo    stop                   stop vault instance
 echo    destroy                delete all localvault data
+echo    start                  start vault container
+echo    stop                   stop and seal vault container
+echo    status                 output vault status
+echo    unseal KEY             unseal vault with key (3 keys required to unseal)
+echo    vault ARG [...]        run vault CLI command
+echo    exec 'CMDLINE'         execute shell command in the vault container
+echo    shell                  interactive shell session in vault container
+echo    seal                   seal vault
 echo.
 goto :eof
 
