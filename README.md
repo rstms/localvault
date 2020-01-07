@@ -1,7 +1,7 @@
 localvault
 ----------
 
-A set of [vault](https://www.vaultproject.io/) configuration scripts for managing a local vault instance on windows 10 machine.
+A set of [vault](https://www.vaultproject.io/) configuration scripts for managing a local vault instance in a docker container on a Windows 10 machine.   Because.
 
 ## Prerequisites
 [Docker Desktop](https://www.docker.com/products/docker-desktop)
@@ -9,7 +9,7 @@ A set of [vault](https://www.vaultproject.io/) configuration scripts for managin
 ## Installation
 Enter the following commands in a CMD shell:
 ```
-cd %USER_PROFILE%
+cd %HOME%
 git clone https://github.com/rstms/localvault.git
 ```
 
