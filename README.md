@@ -14,7 +14,7 @@ git clone https://github.com/rstms/localvault.git
 ```
 Or use the [ZIP link](https://github.com/rstms/localvault/archive/master.zip) and extract these files into `%USERPROFILE%\localvault`
 
-Add %HOME%/localvault to your path using control panel's system applet:
+Add %USERPROFILE%\localvault to your path using control panel's system applet:
 ```
 control sysdm.cpl
 ```
