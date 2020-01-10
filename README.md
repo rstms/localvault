@@ -50,5 +50,7 @@ Usage:  localvault COMMAND
    exec 'CMDLINE'         execute shell command in the vault container
    shell                  interactive shell session in vault container
    seal                   seal vault
+   backup                 write vault data to backup file
+   restore FILENAME       restore vault data from backup file
 
 ```

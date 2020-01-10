@@ -36,10 +36,14 @@ goto :eof
 echo %*
 goto :eof
 
+:datestamp
+for /F "tokens=2" %%i in ("%DATE%") do (for /f "tokens=1,2,3 delims=/" %%a in ("%%i") do set D=%%c%%a%%b)
+for /f "tokens=1 delims=." %%t in ("%TIME%") do for /f "tokens=1,2,3 delims=:" %%e in ("%%t") do set %1=%D%-%%e%%f%%g
+goto :eof
+
 :create
 docker volume inspect vault-file 2>NUL >NUL
 if ERRORLEVEL 1 goto :_create
-
 echo create failed: localvault already exists
 goto :eof
 
@@ -101,4 +105,19 @@ goto :eof
 
 :shell
 docker exec -it  %CONTAINER% /bin/sh -l
+goto :eof
+
+:backup
+call :datestamp DATESTAMP
+set FILENAME=backup-%DATESTAMP%.tgz
+echo Writing vault data to %FILENAME%...
+docker exec -i %CONTAINER% /bin/sh -l -c "tar zc -C /vault -p ." >%FILENAME%
+echo Done
+goto :eof
+
+:restore
+set FILENAME=%2
+echo Restoring vault data from %FILENAME%...
+docker exec -i %CONTAINER% /bin/sh -l -c "tar zx -C /vault" <%FILENAME%
+echo Done
 goto :eof
