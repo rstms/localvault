@@ -74,6 +74,7 @@ goto :eof
 :start
 pushd %VAULT_DIR%
 docker-compose up -d
+docker-compose start
 popd
 goto :eof
 

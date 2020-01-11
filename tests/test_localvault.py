@@ -3,12 +3,25 @@ import pytest
 import subprocess
 import re
 import time
+import platform
+
 
 def cmd(command_line):
     print('\nTesting: %s' % repr(command_line))
-    ret = subprocess.check_output(['cmd', '/c', command_line], stderr=subprocess.STDOUT).decode()
-    ret = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])').sub('', ret)
-    ret = ''.join('\n' if c=='\r' else c for c in ret)
+    system=platform.system()
+    if system == 'Windows':
+        c = ['cmd', '/c', command_line]
+    elif system == 'Linux':
+        c = ['/bin/bash', '-c', './%s' % command_line]
+    else:
+        assert False, 'unknown platform: %s' % system 
+    try:
+        ret = subprocess.check_output(c, stderr=subprocess.STDOUT).decode()
+    except subprocess.CalledProcessError as ex:
+        ret = ex.output
+    if system == 'Windows':
+        ret = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])').sub('', ret)
+        ret = ''.join('\n' if c=='\r' else c for c in ret)
     print(ret)
     return ret
 
