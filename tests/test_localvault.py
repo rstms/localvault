@@ -28,7 +28,7 @@ S = {
 def cmd(command_line):
     print('\nTesting: %s' % repr(command_line))
     try:
-        ret = str(subprocess.check_output([S['SHELL'], S['SHARG'], command_line], stderr=subprocess.STDOUT))
+        ret = subprocess.check_output([S['SHELL'], S['SHARG'], command_line], stderr=subprocess.STDOUT).decode()
     except subprocess.CalledProcessError as ex:
         ret = ex.output
     ret = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])').sub('', ret)

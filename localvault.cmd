@@ -126,15 +126,15 @@ echo Done
 goto :eof
 
 :write-login-script
-set IFILE=%1 
-set OFILE=%2
-echo >%OFILE% @echo off
-for /f "tokens=1,2* delims=:" %%a in ('findstr /r "Root" %IFILE%') do @echo >>%OFLILE% call localvault vault login%%b
+set IFILE=%2
+set OFILE=%VAULT_DIR%/localvault-login.cmd
+echo @echo off>%OFILE%
+for /f "tokens=1,2* delims=:" %%a in ('findstr /r "Root" %IFILE%') do @echo call localvault vault login%%b>>%OFILE%
 goto :eof
 
 :write-unseal-script
-set IFILE=%1
-set OFILE=%2
-echo >%OFILE% @echo off
-for /l %%l in (1,1,3) do @for /f "tokens=1,2* delims=:" %%a in ('findstr /n /r "^" %IFILE% ^| findstr /r "^%%l:"') do @echo >>%OFILE% call localvault unseal%%c
+set IFILE=%2
+set OFILE=%VAULT_DIR%/localvault-unseal.cmd
+echo @echo off>%OFILE%
+for /l %%l in (1,1,3) do @for /f "tokens=1,2* delims=:" %%a in ('findstr /n /r "^" %IFILE% ^| findstr /r "^%%l:"') do @echo call localvault unseal%%c>>%OFILE%
 goto :eof
