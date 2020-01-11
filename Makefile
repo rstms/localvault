@@ -16,3 +16,8 @@ clean:
 	rm -rf .cache
 	rm -rf tests/__pycache__
 	rm -rf tests/*.pyc
+	rm *.txt
+	rm unseal.cmd
+	rm login.cmd
+	rm unseal
+	rm login

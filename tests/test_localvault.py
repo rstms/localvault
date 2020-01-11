@@ -21,7 +21,7 @@ def cmd(command_line):
         ret = ex.output
     if system == 'Windows':
         ret = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])').sub('', ret)
-        ret = ''.join('\n' if c=='\r' else c for c in ret)
+        ret = ''.join('' if c=='\r' else c for c in ret)
     print(ret)
     return ret
 
@@ -38,10 +38,11 @@ def test_create():
 
 def test_start():
     ret = cmd('localvault start')
-    assert ret.endswith('Creating localvault ... done\n')
-    time.sleep(2)
+    print(repr(ret))
+    assert re.match(r'.*Creating localvault ...\s+Creating localvault ... done\s*Starting vault ...\s+Starting vault ... done\s*$', ret)
 
 def test_init():
+    time.sleep(2)
     ret = cmd('localvault init > test.txt')
     ret = read_result('test.txt')
     assert len(ret.split('\n')) == 18

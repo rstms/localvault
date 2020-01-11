@@ -57,6 +57,8 @@ goto :eof
 goto :eof
 
 :destroy
+if %2==-f goto :_destroy_without_warning
+if %2==--force goto :_destroy_without_warning
 echo.
 choice /m "Are you sure you want to *DESTROY* the localvault?"
 echo.
