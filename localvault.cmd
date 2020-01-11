@@ -124,3 +124,17 @@ echo Restoring vault data from %FILENAME%...
 docker exec -i %CONTAINER% /bin/sh -l -c "tar zx -C /vault" <%FILENAME%
 echo Done
 goto :eof
+
+:write-login-script
+set IFILE=%1 
+set OFILE=%2
+echo >%OFILE% @echo off
+for /f "tokens=1,2* delims=:" %%a in ('findstr /r "Root" %IFILE%') do @echo >>%OFLILE% call localvault vault login%%b
+goto :eof
+
+:write-unseal-script
+set IFILE=%1
+set OFILE=%2
+echo >%OFILE% @echo off
+for /l %%l in (1,1,3) do @for /f "tokens=1,2* delims=:" %%a in ('findstr /n /r "^" %IFILE% ^| findstr /r "^%%l:"') do @echo >>%OFILE% call localvault unseal%%c
+goto :eof

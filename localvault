@@ -15,8 +15,12 @@ case $1 in
 	init ) $VAULT vault operator init;;
 
 	destroy )
-		read -p "Are you sure you want to *DESTROY* the localvault ? (y/n) " -n 1 -r
-		echo
+		if [ "$2" == "-f" ] || [ "$2" == "--force" ]; then
+			REPLY=y
+		else
+			read -p "Are you sure you want to *DESTROY* the localvault ? (y/n) " -n 1 -r
+			echo
+		fi
 		if [[ ! $REPLY =~ ^[Yy]$ ]]
 		then
 			echo Okay, not destroying.
@@ -62,13 +66,17 @@ case $1 in
 		;;
 
 	write-unseal-script )
-		awk <$2 >$3 'BEGIN{print "#!/bin/sh"} /^Unseal Key .:/{if(NR<=3) print "localvault unseal " $4}'
-		chmod +x $3
+		IFILE=$2
+		OFILE=$VAULT_DIR/localvault-unseal
+		awk <$IFILE >$OFILE 'BEGIN{print "#!/bin/sh"} /^Unseal Key .:/{if(NR<=3) print "localvault unseal " $4}'
+		chmod +x $OFILE
 		;;
 
 	write-login-script )
-		awk <$2 >$3 'BEGIN{print "#!/bin/sh"} /^Initial Root Token:/{print "localvault vault login " $4}'
-		chmod +x $3
+		IFILE=$2
+		OFILE=$VAULT_DIR/localvault-login
+		awk <$IFILE >$OFILE 'BEGIN{print "#!/bin/sh"} /^Initial Root Token:/{print "localvault vault login " $4}'
+		chmod +x $OFILE 
 		;;
 
 	usage|help )
@@ -87,6 +95,8 @@ Where COMMAND is:
 	exec 'CMDLINE'         execute shell command in the vault container
 	shell                  interactive shell session in vault container
 	seal                   seal vault
+	backup		       backup vault data to tarball
+	restore TARBALL        restore vault data from tarball
 EOF
 	;;
 
