@@ -32,7 +32,7 @@ def cmd(command_line):
     except subprocess.CalledProcessError as ex:
         ret = ex.output
     r=re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
-    ret = r.sub('', str(ret))
+    ret = r.sub('', unicode(ret))
     if S['SYSTEM'] == 'Windows':
         ret = ''.join('' if c=='\r' else c for c in ret)
     print(ret)
