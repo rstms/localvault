@@ -31,7 +31,8 @@ def cmd(command_line):
         ret = subprocess.check_output([S['SHELL'], S['SHARG'], command_line], stderr=subprocess.STDOUT).decode('UTF-8')
     except subprocess.CalledProcessError as ex:
         ret = ex.output
-    ret = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])').sub('', ret)
+    r=re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    ret = r.sub('', str(ret))
     if S['SYSTEM'] == 'Windows':
         ret = ''.join('' if c=='\r' else c for c in ret)
     print(ret)
