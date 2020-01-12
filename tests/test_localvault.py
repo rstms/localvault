@@ -64,11 +64,11 @@ def test_init():
 
 def test_write_unseal_script():
     filename = 'localvault-unseal%s' % S['SUFFIX']
-    pathname = os.path.join(os.path.expanduser('~'), 'localvault', filename)
+    pathname = os.path.join(os.path.expanduser('~'), '.localvault', filename)
     ret = cmd('localvault write-unseal-script test.txt')
     ret = read_result(pathname)
     assert len(ret.split('\n')) == 4
-    pattern = '%s\n%slocalvault unseal ' % (S['SHEBANG'], S['CALL'])
+    pattern = '%s\n%svault operator unseal ' % (S['SHEBANG'], S['CALL'])
     assert ret.startswith(pattern)
 
 def test_unseal():
@@ -77,11 +77,11 @@ def test_unseal():
 
 def test_write_login_script():
     filename = 'localvault-login%s' % S['SUFFIX']
-    pathname = os.path.join(os.path.expanduser('~'), 'localvault', filename)
+    pathname = os.path.join(os.path.expanduser('~'), '.localvault', filename)
     ret = cmd('localvault write-login-script test.txt')
     ret = read_result(pathname)
     assert len(ret.split('\n')) == 2
-    pattern = '%s\n%slocalvault vault login ' % (S['SHEBANG'], S['CALL'])
+    pattern = '%s\n%svault login ' % (S['SHEBANG'], S['CALL'])
     assert ret.startswith(pattern)
 
 def test_login():

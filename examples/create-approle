@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+#set -x
+
+TOKEN=$1
+ROLE=$2
+_PATH=$3
+
+usage() {
+  echo "Usage:"
+  echo "  create-role TOKEN|- ROLE"
+  exit -1
+}
+
+[ -n "$TOKEN" ] || usage
+[ -n "$ROLE" ] || usage
+
+[ "$TOKEN" == "-" ] || vault login $TOKEN >/dev/null
+
+# ensure approle auth is enabled
+vault auth list -format=json | jq -r 'keys|.[]' | grep -q ^approle/ || vault auth enable approle
+
+cat <<EOF | vault policy write $ROLE -
+	path "/kv/$ROLE/*" {
+	  capabilities = ["read", "list"]
+	}
+EOF
+
+vault write auth/approle/role/$ROLE policies=default,$ROLE
+
+ROLE_ID=$(vault read auth/approle/role/$ROLE/role-id -format=json | jq -r .data.role_id)
+echo ROLE_ID=$ROLE_ID
+export ROLE_ID=$ROLE_ID
+
+SECRET_ID=$(vault write -f auth/approle/role/$ROLE/secret-id -format=json | jq -r .data.secret_id)
+echo SECRET_ID=$SECRET_ID
+export SECRET_ID=$SECRET_ID
+
+# ensure kv secrets are enabled at path /kv
+vault secrets list | grep -q '^kv/\s*kv'  || vault secrets enable kv
