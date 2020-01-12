@@ -12,16 +12,14 @@ S = {
         'SHEBANG': '@echo off',
         'SUFFIX': '.cmd',
         'SHELL': 'cmd',
-        'SHARG': '/c',
-        'CALL': 'call '
+        'SHARG': '/c'
     },
     'Linux': {
         'SYSTEM': 'Linux',
         'SHEBANG': '#!/bin/sh',
         'SUFFIX': '',
         'SHELL': '/bin/bash',
-        'SHARG': '-c',
-        'CALL': ''
+        'SHARG': '-c'
     }
 }[platform.system()]
        
@@ -68,7 +66,7 @@ def test_write_unseal_script():
     ret = cmd('localvault write-unseal-script test.txt')
     ret = read_result(pathname)
     assert len(ret.split('\n')) == 4
-    pattern = '%s\n%svault operator unseal ' % (S['SHEBANG'], S['CALL'])
+    pattern = '%s\nvault operator unseal ' % S['SHEBANG']
     assert ret.startswith(pattern)
 
 def test_unseal():
@@ -81,7 +79,7 @@ def test_write_login_script():
     ret = cmd('localvault write-login-script test.txt')
     ret = read_result(pathname)
     assert len(ret.split('\n')) == 2
-    pattern = '%s\n%svault login ' % (S['SHEBANG'], S['CALL'])
+    pattern = '%s\nvault login ' % S['SHEBANG']
     assert ret.startswith(pattern)
 
 def test_login():

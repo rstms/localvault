@@ -11,10 +11,11 @@ Enter the following commands in a CMD shell:
 ```
 cd %USERPROFILE%
 git clone https://github.com/rstms/localvault.git
+ren localvault .localvault
 ```
-Or use the [ZIP link](https://github.com/rstms/localvault/archive/master.zip) and extract these files into `%USERPROFILE%\localvault`
+Or use the [ZIP link](https://github.com/rstms/localvault/archive/master.zip) and extract these files into `%USERPROFILE%\.localvault`
 
-Add %USERPROFILE%\localvault to your path using control panel's system applet:
+Add %USERPROFILE%\.localvault to your path using control panel's system applet:
 ```
 control sysdm.cpl
 ```

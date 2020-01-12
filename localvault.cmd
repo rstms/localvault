@@ -1,6 +1,6 @@
 @echo off
 rem @ECHO OFF
-set VAULT_DIR=%USERPROFILE%\localvault
+set VAULT_DIR=%USERPROFILE%\.localvault
 set CONTAINER=localvault
 REM set VOLUME=-v vault-config:/vault/config -v vault-file:/vault/file -v vault-logs:/vault/logs
 set VOLUME=-v vault-file:/vault/file -v vault-logs:/vault/logs
@@ -32,10 +32,6 @@ echo    seal                   seal vault
 echo.
 goto :eof
 
-:echo
-echo %*
-goto :eof
-
 :datestamp
 for /F "tokens=2" %%i in ("%DATE%") do (for /f "tokens=1,2,3 delims=/" %%a in ("%%i") do set D=%%c%%a%%b)
 for /f "tokens=1 delims=." %%t in ("%TIME%") do for /f "tokens=1,2,3 delims=:" %%e in ("%%t") do set %1=%D%-%%e%%f%%g
@@ -57,8 +53,8 @@ goto :eof
 goto :eof
 
 :destroy
-if %2==-f goto :_destroy_without_warning
-if %2==--force goto :_destroy_without_warning
+if "%2"=="-f" goto :_destroy_without_warning
+if "%2"=="--force" goto :_destroy_without_warning
 echo.
 choice /m "Are you sure you want to *DESTROY* the localvault?"
 echo.
@@ -129,12 +125,19 @@ goto :eof
 set IFILE=%2
 set OFILE=%VAULT_DIR%/localvault-login.cmd
 echo @echo off>%OFILE%
-for /f "tokens=1,2* delims=:" %%a in ('findstr /r "Root" %IFILE%') do @echo call localvault vault login%%b>>%OFILE%
+for /f "tokens=1,2* delims=:" %%a in ('findstr /r "Root" %IFILE%') do @echo vault login%%b>>%OFILE%
 goto :eof
 
 :write-unseal-script
 set IFILE=%2
 set OFILE=%VAULT_DIR%/localvault-unseal.cmd
 echo @echo off>%OFILE%
-for /l %%l in (1,1,3) do @for /f "tokens=1,2* delims=:" %%a in ('findstr /n /r "^" %IFILE% ^| findstr /r "^%%l:"') do @echo call localvault unseal%%c>>%OFILE%
+for /l %%l in (1,1,3) do @for /f "tokens=1,2* delims=:" %%a in ('findstr /n /r "^" %IFILE% ^| findstr /r "^%%l:"') do @echo vault operator unseal%%c>>%OFILE%
+goto :eof
+
+:install
+mkdir %VAULT_DIR%
+copy localvault.cmd %VAULT_DIR%
+copy docker-compose.yml %VAULT_DIR%
+echo Use SYSDM.CPL to Add %VAULT_DIR% to your path
 goto :eof
